@@ -8,9 +8,16 @@
             margin-bottom: 20px;
             font-size: 24px;
             text-align: center;
-                
+
         }
 
+        .sobre-imagem mb-4{
+            width: 50%;       /* ocupa toda a largura disponível */
+            height: 50px;     /* altura menor, ajustável conforme preferir */
+            object-fit: cover; /* mantém proporção e corta o excesso se necessário */
+            border-radius: 5px; /* opcional: borda levemente arredondada */
+
+        }
         .navbar {
             background-color: #1f2a35 !important;
         }

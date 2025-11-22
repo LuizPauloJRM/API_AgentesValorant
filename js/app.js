@@ -1,15 +1,19 @@
+//inicio do codigo , função carregarAgentes , ao carregar a pagina 
 async function carregarAgentes() {
     try {
-        const resposta = await fetch("https://valorant-api.com/v1/agents?isPlayableCharacter=true&language=pt-BR");
-        const dados = await resposta.json();
+        // Faz a requisição à API  , await espera a resposta antes de continuar e fetch busca os dados da url 
+        let resposta = await fetch("https://valorant-api.com/v1/agents?isPlayableCharacter=true&language=pt-BR");
+        let dados = await resposta.json(); // Converte a resposta em JSON
 
-        const agentes = dados.data;
-        const lista = document.getElementById("lista-agentes");
+        let agentes = dados.data; // Array de agentes retornado pela API
+        let lista = document.getElementById("lista-agentes"); // Container onde os cards serão adicionados
 
+        // Para cada agente, cria um card dinâmico
         agentes.forEach(agente => {
-            const card = document.createElement("div");
-            card.classList.add("col-6", "col-md-4", "col-lg-3");
+            let card = document.createElement("div");
+            card.classList.add("col-6", "col-md-4", "col-lg-3"); // Classes Bootstrap para responsividade
 
+            // Conteúdo HTML do card
             card.innerHTML = `
                 <div class="card bg-dark text-white card-agente" data-id="${agente.uuid}">
                     <img src="${agente.displayIcon}" class="card-img-top" alt="${agente.displayName}">
@@ -19,8 +23,10 @@ async function carregarAgentes() {
                 </div>
             `;
 
+            // Adiciona evento de clique para abrir modal do agente
             card.addEventListener("click", () => abrirModalAgente(agente));
 
+            // Adiciona o card ao container
             lista.appendChild(card);
         });
 
@@ -29,48 +35,58 @@ async function carregarAgentes() {
     }
 }
 
+//agente modulo  , função abrirModalAgente
 function abrirModalAgente(agente) {
+    // Atualiza o conteúdo do modal com informações do agente
     document.getElementById("agenteNome").textContent = agente.displayName;
     document.getElementById("agenteImagem").src = agente.fullPortrait || agente.displayIcon;
     document.getElementById("agenteFuncao").textContent = agente.role ? agente.role.displayName : "Sem função";
     document.getElementById("agenteDescricao").textContent = agente.description;
 
-    const listaHabilidades = document.getElementById("agenteHabilidades");
-    listaHabilidades.innerHTML = "";
+    // Lista de habilidades
+    let listaHabilidades = document.getElementById("agenteHabilidades");
+    listaHabilidades.innerHTML = ""; // Limpa conteúdo antigo
 
+    // Adiciona cada habilidade do agente
     agente.abilities.forEach(hab => {
-        if (!hab.displayName) return;
+        if (!hab.displayName) return; // Ignora habilidades sem nome
 
-        const li = document.createElement("li");
+        let li = document.createElement("li");
         li.textContent = `${hab.displayName} – ${hab.description}`;
         listaHabilidades.appendChild(li);
     });
 
-    const modal = new bootstrap.Modal(document.getElementById("modalAgente"));
+    // Inicializa e mostra o modal com Bootstrap
+    let modal = new bootstrap.Modal(document.getElementById("modalAgente"));
     modal.show();
 }
 
+// Inicializa a função de carregar agentes assim que o script é carregado
 carregarAgentes();
-// Seletores
-const inputArma = document.getElementById('inputPesquisaArma');
-const btnPesquisarArma = document.getElementById('btnPesquisarArma');
-const resultadoArmas = document.getElementById('resultadoArmas');
 
-// Função para buscar armas na API
+
+//selecao de armas
+let inputArma = document.getElementById('inputPesquisaArma'); // Campo de busca
+let btnPesquisarArma = document.getElementById('btnPesquisarArma'); // Botão de pesquisa
+let resultadoArmas = document.getElementById('resultadoArmas'); // Container dos resultados
+
+//Armas na api , função buscarArmas
 async function buscarArmas(query) {
     try {
-        const resposta = await fetch('https://valorant-api.com/v1/weapons?language=pt-BR');
-        const dados = await resposta.json();
-        const armas = dados.data;
+        // Requisição à API de armas
+        let resposta = await fetch('https://valorant-api.com/v1/weapons?language=pt-BR');
+        let dados = await resposta.json();
+        let armas = dados.data;
 
-        // Filtra pelo nome que o usuário digitou (case insensitive)
-        const resultados = armas.filter(arma => arma.displayName.toLowerCase().includes(query.toLowerCase()));
+        // filtra armas pelo nome digitado (case insensitive)
+        let resultados = armas.filter(arma => arma.displayName.toLowerCase().includes(query.toLowerCase()));
 
         // Limpa resultados antigos
         resultadoArmas.innerHTML = '';
 
+        // Cria cards para cada arma encontrada
         resultados.forEach(arma => {
-            const card = document.createElement('div');
+            let card = document.createElement('div');
             card.classList.add('col-6', 'col-md-4', 'col-lg-3');
 
             card.innerHTML = `
@@ -82,11 +98,13 @@ async function buscarArmas(query) {
                 </div>
             `;
 
+            // Evento para abrir modal da arma
             card.addEventListener('click', () => abrirModalArma(arma));
 
             resultadoArmas.appendChild(card);
         });
 
+        // Mensagem caso nenhuma arma seja encontrada
         if (resultados.length === 0) {
             resultadoArmas.innerHTML = '<p class="text-center mt-3">Nenhuma arma encontrada.</p>';
         }
@@ -96,7 +114,7 @@ async function buscarArmas(query) {
     }
 }
 
-// Função para abrir modal com informações da arma
+//Abrir arma  modulo  , função 
 function abrirModalArma(arma) {
     document.getElementById('armaNome').textContent = arma.displayName;
     document.getElementById('armaImagem').src = arma.displayIcon || '';
@@ -104,17 +122,20 @@ function abrirModalArma(arma) {
     document.getElementById('armaPreco').textContent = arma.shopData ? `${arma.shopData.cost} VP` : 'N/A';
     document.getElementById('armaDescricao').textContent = arma.description || 'Sem descrição';
 
-    const modal = new bootstrap.Modal(document.getElementById('modalArma'));
+    let modal = new bootstrap.Modal(document.getElementById('modalArma'));
     modal.show();
 }
 
-// Eventos
+
+
+// Clique no botão de pesquisa interage com a função buscarArmas
 btnPesquisarArma.addEventListener('click', () => buscarArmas(inputArma.value));
-inputArma.addEventListener('keyup', (e) => {
-    // Busca ao digitar, apenas se tiver mais de 2 caracteres
-    if (inputArma.value.length >= 2) {
+
+// Digitar no campo de pesquisa (busca em tempo real)
+inputArma.addEventListener('keyup', () => {
+    if (inputArma.value.length >= 2) { // Apenas busca se tiver 2 ou mais caracteres
         buscarArmas(inputArma.value);
     } else {
-        resultadoArmas.innerHTML = '';
+        resultadoArmas.innerHTML = ''; // Limpa resultados ao ter 2 caract.
     }
 });
