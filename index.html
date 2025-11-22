@@ -28,12 +28,48 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="#">Início</a></li>
                 <li class="nav-item"><a class="nav-link" href="#agentes">Agentes</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
+                <li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- pesquisar arma -->
+    <section class="container mt-4">
+        <h2 id="pesquisaArma">Escolha sua arma preferida</h2>
+        <div class="input-group mb-3">
 
+
+            <input type="text" class="form-control"
+                placeholder="Digite o nome da arma ... Vandal, odin... Ou clique em pesquisar para ver todas as armas"
+                id="inputPesquisaArma">
+
+            <button class="btn btn-danger" type="button" id="btnPesquisarArma">Pesquisar</button>
+        </div>
+
+        <div id="resultadoArmas" class="row g-4 justify-content-center">
+            <!-- Resultados serão adicionados aqui dinamicamente -->
+        </div>
+    </section>
+
+    <!-- modal de armas do jogo  -->
+    <div class="modal fade" id="modalArma" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="armaNome"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <img id="armaImagem" class="img-fluid" style="max-height: 320px;">
+                    </div>
+                    <p><strong>Categoria:</strong> <span id="armaCategoria"></span></p>
+                    <p><strong>Preço:</strong> <span id="armaPreco"></span></p>
+                    <p id="armaDescricao"></p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- CARROSSEL -->
     <div class="container mt-5">
         <h2 class="text-center mb-4">Destaques Valorant</h2>
@@ -106,7 +142,7 @@
 
 
     <footer>
-        © 2025 Valorant Fan Page
+        © 2025 Valorant
     </footer>
 
 

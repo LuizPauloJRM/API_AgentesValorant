@@ -1,195 +1,131 @@
-# API_AgentesValorant
- cada detalhe do projeto "Agentes do Valorant" e aprender a criar um aplicativo web de qualidade. 
-A API que você está usando é a Valorant API: https://valorant-api.com/.
-Ela é gratuita, pública, não exige autenticação e fornece dados de agentes, mapas, armas, skins, etc.
-
-Como consumir
-
-No seu projeto, você faz um fetch em JavaScript puro:
-
-const resposta = await fetch("https://valorant-api.com/v1/agents?isPlayableCharacter=true&language=pt-BR");
-const dados = await resposta.json();
-
-
-https://valorant-api.com/v1/agents → Endpoint de agentes
-
-isPlayableCharacter=true → Retorna apenas os agentes jogáveis
-
-language=pt-BR → Retorna os textos em Português
-
-O resultado (dados.data) é um array de objetos representando cada agente.
-
-Estrutura de um agente
-
-Exemplo simplificado de um agente:
-
-{
-  "uuid": "uuid-do-agente",
-  "displayName": "Jett",
-  "description": "Jett é uma duelista ágil...",
-  "role": {
-    "displayName": "Duelista"
-  },
-  "displayIcon": "url-da-imagem-pequena",
-  "fullPortrait": "url-da-imagem-grande",
-  "abilities": [
-    {
-      "displayName": "Updraft",
-      "description": "Salta para cima rapidamente",
-      "slot": "Ability1",
-      "displayIcon": "url-icone"
-    },
-    ...
-  ]
-}
-
-
-uuid → Identificador único do agente
-
-displayName → Nome do agente
-
-description → Descrição do agente
-
-role.displayName → Função do agente (Duelista, Controlador, Sentinela, Iniciador)
-
-displayIcon → Imagem pequena para card
-
-fullPortrait → Imagem grande para modal
-
-abilities → Array com habilidades do agente
-
-Como funciona no seu projeto
-
-Você faz o fetch → pega JSON com todos os agentes.
-
-Itera sobre o array (forEach) → cria cards HTML dinamicamente.
-
-Adiciona evento de clique → abre Modal com informações detalhadas do agente.
-
-O Modal exibe:
-
-Nome, função, descrição
-
-Imagem completa (fullPortrait)
-
-Lista de habilidades
-
-Tudo sem backend, apenas HTML, CSS e JS puro.
-
-2️⃣ README completo para o projeto
 # Valorant Agents - Projeto Frontend
 
 ## Descrição
-Esta é uma página de estudo que consome a **API oficial do Valorant** para mostrar todos os agentes do jogo. 
-O projeto utiliza **HTML, CSS, Bootstrap e JavaScript puro**, funcionando totalmente local sem backend.
 
-Você pode:
-- Visualizar todos os agentes em cards clicáveis
-- Abrir um modal com informações detalhadas de cada agente
-- Ver habilidades e descrição dos agentes
-- Ver imagens pequenas e grandes de cada agente
+O **Valorant Agents** é uma aplicação frontend que consome a **API oficial de Valorant** para exibir todos os agentes e armas do jogo. O projeto foi desenvolvido como estudo de JavaScript, HTML, CSS e Bootstrap, aplicando conceitos de **async/await**, **fetch**, **DOM dinâmico** e manipulação de eventos.
+
+Funcionalidades principais:
+
+- Lista de agentes jogáveis com cards interativos
+- Modal com informações detalhadas dos agentes (nome, função, habilidades, descrição, imagens)
+- Barra de pesquisa interativa de armas
+- Modal com informações detalhadas das armas (nome, categoria, preço, descrição)
+- Consumo de API totalmente via frontend
+- Navegação entre páginas (`index.html` e `sobre.html`)  
+
+O projeto foi inspirado e guiado por conceitos aprendidos com **Professor Renan** em sala de aula e em referência ao projeto do Gamma App: [Projeto Lista de Tarefas com localStorage, Navegação e Inicialização](https://gamma.app/docs/Projeto-Lista-de-Tarefas-com-localStorage-Navegacao-e-Inicializac-aopot92tuki4fjk?mode=doc).
 
 ---
 
-## API Utilizada
+## Tecnologias utilizadas
 
-**Base URL:** `https://valorant-api.com/v1/`
+- HTML5  
+- CSS3  
+- Bootstrap 5  
+- JavaScript (ES6+)  
+- API oficial do Valorant: [https://valorant-api.com](https://valorant-api.com)  
 
-**Endpoints principais:**
+---
 
-1. **Agentes**
+## Estrutura do projeto
+
+/valorant-agentes
+│
+├─ index.html → Página principal com agentes e armas
+├─ sobre.html → Página sobre o projeto
+├─ css/
+│ └─ style.css → Estilos personalizados
+├─ js/
+│ └─ app.js → Código JavaScript com consumo da API
+└─ assets/ → Imagens, logos e ícones
 
 
-GET /agents?isPlayableCharacter=true&language=pt-BR
+---
 
-- Retorna todos os agentes jogáveis
-- Parâmetros opcionais:
-  - `isPlayableCharacter=true` → filtra apenas agentes jogáveis
-  - `language=pt-BR` → retorna informações em português
+## Consumo da API
 
-**Exemplo de resposta de um agente:**
-```json
+A aplicação consome a **API oficial do Valorant** de forma **assíncrona** usando `fetch` e `async/await`.  
+
+### Exemplo de consumo de agentes:
+
+```javascript
+async function carregarAgentes() {
+    const resposta = await fetch("https://valorant-api.com/v1/agents?isPlayableCharacter=true&language=pt-BR");
+    const dados = await resposta.json();
+    const agentes = dados.data;
+    // Agora é possível iterar sobre os agentes e criar os cards no DOM
+}
+
+### Estrutura de um agente
+
+```javascript
 {
   "uuid": "uuid-do-agente",
   "displayName": "Jett",
   "description": "Jett é uma duelista ágil...",
-  "role": {
-    "displayName": "Duelista"
-  },
-  "displayIcon": "url-da-imagem-pequena",
-  "fullPortrait": "url-da-imagem-grande",
+  "role": { "displayName": "Duelista" },
+  "displayIcon": "url-pequena",
+  "fullPortrait": "url-grande",
   "abilities": [
-    {
-      "displayName": "Updraft",
-      "description": "Salta para cima rapidamente",
-      "slot": "Ability1",
-      "displayIcon": "url-icone"
-    }
+    { "displayName": "Updraft", "description": "Salta para cima rapidamente" }
   ]
 }
 
+### Consumo de armas
 
-Outros endpoints úteis (opcional):
+```javascript
+async function buscarArmas(query) {
+    const resposta = await fetch('https://valorant-api.com/v1/weapons?language=pt-BR');
+    const dados = await resposta.json();
+    const armas = dados.data.filter(arma => arma.displayName.toLowerCase().includes(query.toLowerCase()));
+    // Criar cards dinamicamente com informações
+}
 
-Mapas: /maps
+Conceitos aprendidos
 
-Armas: /weapons
+Durante o desenvolvimento deste projeto, foram aplicados e estudados:
 
-Skins: /skins
+Async/await e fetch API para consumo de dados assíncronos
 
-Todos suportam o parâmetro language para retornar textos em português.
+Manipulação dinâmica do DOM para criar cards e modais
 
-Estrutura do projeto
-/valorant-agents
-│
-├─ index.html         → Página principal
-├─ sobre.html         → Página “Sobre”
-├─ css/
-│   └─ style.css      → Estilos personalizados
-├─ js/
-│   └─ app.js         → Código JavaScript
-└─ assets/            → Imagens e logos
+Eventos em JavaScript (click, keyup)
 
-Funcionamento do JavaScript
+Estruturação de projetos frontend com HTML, CSS e Bootstrap
 
-Faz fetch na API para obter dados dos agentes
+Criação de componentes reutilizáveis (cards, modais)
 
-Itera sobre os agentes e cria cards dinamicamente
+Uso de APIs públicas para criar conteúdo interativo
 
-Cada card recebe evento de clique que abre um modal
-
-Modal mostra:
-
-Nome
-
-Função
-
-Descrição
-
-Habilidades
-
-Imagem grande
-
-Tudo atualizado automaticamente sempre que a página é carregada
+Navegação entre páginas e organização de arquivos
 
 Como rodar
 
-Clone ou baixe o projeto
+Clone o repositório:
 
-Abra index.html no navegador
+git clone https://github.com/seuusuario/valorant-agents.git
 
-Os agentes serão carregados automaticamente da API
 
-Clique em qualquer agente para ver detalhes no modal
+Abra index.html no navegador.
 
-Tecnologias utilizadas
+Aguarde os agentes carregarem automaticamente.
 
-HTML5
+Clique nos cards para abrir o modal com detalhes.
 
-CSS3
+Use a barra de pesquisa de armas para buscar e ver informações.
 
-Bootstrap 5
+Referências
 
-JavaScript puro (ES6)
+API Valorant
 
-API oficial do Valorant (https://valorant-api.com/)
+Projeto Lista de Tarefas - Gamma App
+
+Conceitos ensinados pelo Professor Renan em sala de aula
+
+Observações
+
+Todo o projeto funciona 100% frontend, não precisa de backend.
+
+A API pode retornar dados em inglês se o parâmetro language não for definido.
+
+Este projeto pode ser expandido com filtros por função, skins, mapas e melhorias visuais.
