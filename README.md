@@ -1,8 +1,8 @@
-# Valorant Agents - Projeto Frontend
+# Valorant Agentes - Projeto Frontend
 
 ## Descrição
 
-O **Valorant Agents** é uma aplicação frontend que consome a **API oficial de Valorant** para exibir todos os agentes e armas do jogo. O projeto foi desenvolvido como estudo de JavaScript, HTML, CSS e Bootstrap, aplicando conceitos de **async/await**, **fetch**, **DOM dinâmico** e manipulação de eventos.
+O **Valorant Agentes** é uma aplicação frontend que consome a **API oficial de Valorant** para exibir todos os agentes e armas do jogo. O projeto foi desenvolvido como estudo de JavaScript, HTML, CSS e Bootstrap, aplicando conceitos de **async/await**, **fetch**, **DOM dinâmico** e manipulação de eventos.
 <img width="1346" height="575" alt="image" src="https://github.com/user-attachments/assets/344a66a2-dd33-4b78-9cf0-ea02b4717528" />
 <img width="1347" height="596" alt="image" src="https://github.com/user-attachments/assets/11ea29bb-4b5a-4d91-835d-dcdf3d7c042a" />
 
